@@ -1,0 +1,22 @@
+Wunderkiste is a free and open source project.
+
+Its various parts (both firmware and hardware) are licensed under different terms. 
+This file serves as a quick overview over the licenses involved in this project.
+
+firmware/lib/
+    - Contains headers and libraries for STM32 processors, fatfs,
+      the Helix MP3 decoder and various utility functions. These files 
+      are licensed according to the notes in each file.
+
+firmware/programming
+    - Contains scripts and configuration files for programming STM32 chips
+      via openocd. The files are licensed under the MIT license according to the 
+      notes in each file.
+
+All other files in firmware/
+    - These files are licensed under the GPLv3 license according to the notes 
+      in each file unless otherwise specified.
+
+hardware/
+    - Contains the printed circuit board designs. These files are licensed to you
+      under the terms of the CC BY-SA 3.0 license (https://creativecommons.org/licenses/by-sa/3.0/).
