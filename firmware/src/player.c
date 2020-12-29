@@ -106,7 +106,7 @@ bool pl_playDirectory(const char* path)
         error(eOtherDiscError);
         return false;
     }
-    strncpy(dirPath, path, PATH_BUFFER_SIZE);
+    strncpy(dirPath, path, PATH_BUFFER_SIZE - 1);
 
     // rewind to the start of the directory
     f_readdir(&dir, NULL);
@@ -152,7 +152,7 @@ bool pl_playDirectory(const char* path)
             if ((strcmp("mp3", get_filename_ext(fn)) == 0) || (strcmp("MP3", get_filename_ext(fn)) == 0))
             {
                 // append to the list
-                strncpy(fileList[currFileIdx], fn, PATH_BUFFER_SIZE);
+                strncpy(fileList[currFileIdx], fn, PATH_BUFFER_SIZE - 1);
                 // assign a pointer to the array of pointers that will later
                 // be sorted
                 sortedFileList[currFileIdx] = fileList[currFileIdx];

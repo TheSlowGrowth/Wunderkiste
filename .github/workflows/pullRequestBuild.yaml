@@ -1,0 +1,25 @@
+name: pullRequestBuild
+on: 
+  # run for all pull requests
+  pull_request:
+  # Run for all commits on feature branches
+  push:
+    branches:    
+      - 'feature/**'
+jobs:
+  ###############################################################################
+  # builds the firmware on arm-none-eabi-gcc
+  testBuild:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: install arm-none-eabi-gcc
+      uses: fiam/arm-none-eabi-gcc@v1
+      with:
+        release: '9-2019-q4' # The arm-none-eabi-gcc release to use.
+    - name: checkout
+      uses: actions/checkout@v1
+    - name: make all
+      run: |
+        cd firmware
+        make all TOOLCHAIN_PATH=""

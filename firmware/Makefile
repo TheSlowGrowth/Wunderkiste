@@ -1,6 +1,6 @@
 TARGET = Wunderkiste
 # change this to the toolchain installation directory
-TOOLCHAIN_PATH ?= ~/dev/gcc-arm-none-eabi-4_8-2014q3/
+TOOLCHAIN_PATH ?= ~/dev/gcc-arm-none-eabi-4_8-2014q3/bin/
 
 # System specifications
 F_CRYSTAL      = 8000000L
@@ -73,7 +73,6 @@ PGM_SERIAL_VERIFY ?= -v
 
 # --- You should not have to modify these --------------------------------------
 
-TOOLCHAIN_BIN  = $(TOOLCHAIN_PATH)bin/
 STM32_PATH     = third_party/STM
 
 # --- Do not modify anything below this point ----------------------------------
@@ -81,15 +80,15 @@ STM32_PATH     = third_party/STM
 BUILD_ROOT     = build/
 BUILD_DIR      = $(BUILD_ROOT)$(TARGET)/
 
-CC             = $(TOOLCHAIN_BIN)arm-none-eabi-gcc
-CXX            = $(TOOLCHAIN_BIN)arm-none-eabi-g++
-AS             = $(TOOLCHAIN_BIN)arm-none-eabi-as
-OBJCOPY        = $(TOOLCHAIN_BIN)arm-none-eabi-objcopy
-DB             = $(TOOLCHAIN_BIN)arm-none-eabi-gdb
-OBJDUMP        = $(TOOLCHAIN_BIN)arm-none-eabi-objdump
-AR             = $(TOOLCHAIN_BIN)arm-none-eabi-ar
-SIZE           = $(TOOLCHAIN_BIN)arm-none-eabi-size
-NM             = $(TOOLCHAIN_BIN)arm-none-eabi-nm
+CC             = $(TOOLCHAIN_PATH)arm-none-eabi-gcc
+CXX            = $(TOOLCHAIN_PATH)arm-none-eabi-g++
+AS             = $(TOOLCHAIN_PATH)arm-none-eabi-as
+OBJCOPY        = $(TOOLCHAIN_PATH)arm-none-eabi-objcopy
+DB             = $(TOOLCHAIN_PATH)arm-none-eabi-gdb
+OBJDUMP        = $(TOOLCHAIN_PATH)arm-none-eabi-objdump
+AR             = $(TOOLCHAIN_PATH)arm-none-eabi-ar
+SIZE           = $(TOOLCHAIN_PATH)arm-none-eabi-size
+NM             = $(TOOLCHAIN_PATH)arm-none-eabi-nm
 REMOVE         = rm -f
 CAT            = cat
 FORMAT_SIZE    = | figlet | cowsay -n -f moose
