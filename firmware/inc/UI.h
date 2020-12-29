@@ -19,9 +19,21 @@ typedef enum
     ui_button_prev,
 } ui_button_t;
 
+typedef enum 
+{
+    ui_event_none = 0,
+    ui_event_prev_pressed,
+    ui_event_prev_released,
+    ui_event_next_pressed,
+    ui_event_next_released,
+} ui_event_t;
+
 void ui_init();
 void ui_enterState(ui_state_t newState);
 bool ui_isButtonDown(ui_button_t button);
-void ui_process();
+void ui_processLeds();
+
+void ui_processButtons();
+ui_event_t ui_getNextEvent();
 
 #endif // ifndef __UI_H__

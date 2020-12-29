@@ -14,8 +14,8 @@
 #define LED_RED_PORT            GPIOD
 #define LED_RED_PIN             GPIO_Pin_0
 
-#define BUTTON_PREV			(!(BUTTON_PREV_PORT->IDR & BUTTON_PREV_PIN))
-#define BUTTON_NEXT			(!(BUTTON_NEXT_PORT->IDR & BUTTON_NEXT_PIN))
+#define BUTTON_PREV_DOWN			(!(BUTTON_PREV_PORT->IDR & BUTTON_PREV_PIN))
+#define BUTTON_NEXT_DOWN			(!(BUTTON_NEXT_PORT->IDR & BUTTON_NEXT_PIN))
 
 ui_state_t ui_currentState;
 
@@ -61,20 +61,8 @@ void ui_setup_button_pin(GPIO_TypeDef* port, uint32_t pin)
 	GPIO_Init(port, &GPIO_InitStructure);
 }
 
-void ui_init()
+void ui_initLeds()
 {
-    // setup GPIO clocks
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
-
-	// LED outputs
-    ui_setup_led_pin(LED_GREEN_PORT, LED_GREEN_PIN);
-    ui_setup_led_pin(LED_RED_PORT, LED_RED_PIN);
-
-    // Button inputs
-    ui_setup_button_pin(BUTTON_PREV_PORT, BUTTON_PREV_PIN);
-    ui_setup_button_pin(BUTTON_NEXT_PORT, BUTTON_NEXT_PIN);
-
     ui_currentPattern = &ui_patternIdle;
     ui_currentPatternProgress = 0;
     ui_currentState = -1; // invalid
@@ -115,15 +103,15 @@ bool ui_isButtonDown(ui_button_t button)
     switch(button) 
     {
         case ui_button_prev:
-            return BUTTON_PREV;
+            return BUTTON_PREV_DOWN;
         case ui_button_next:
-            return BUTTON_NEXT;
+            return BUTTON_NEXT_DOWN;
         default:
             return false;
     }
 }
 
-void ui_process()
+void ui_processLeds()
 {
     const int prescaler = 3;
 
@@ -141,4 +129,112 @@ void ui_process()
 
     ui_currentPatternProgress++;
     ui_currentPatternProgress &= ((0x1F + 1) << prescaler) - 1;
+}
+
+// Event Queue
+
+#define UI_EVENT_QUEUE_SIZE 256
+#define UI_EVENT_QUEUE_BITMASK 0xFF
+uint8_t ui_eventQueue[UI_EVENT_QUEUE_SIZE];
+uint8_t ui_eventQueueHead;
+uint8_t ui_eventQueueTail;
+
+#define UI_NUM_BUTTONS 2
+#define UI_COUNTER_THRESH 100
+// The counter counts from 0 upwards to debounce the "depressed" event,
+// generating a "ui_event_XYZ_pressed" event when it reaches UI_COUNTER_THRESH.
+// The counter counts from 0 downwards to debounce the "released" event,
+// generating a "ui_event_XYZ_released" event when it reaches -UI_COUNTER_THRESH.
+int8_t buttonCounters[UI_NUM_BUTTONS];
+
+void ui_initButtons() 
+{   
+    // adjust debouncing to the initial state of the buttons
+    buttonCounters[0] = (BUTTON_PREV_DOWN) ? UI_COUNTER_THRESH + 1 : -UI_COUNTER_THRESH - 1;
+    buttonCounters[1] = (BUTTON_NEXT_DOWN) ? UI_COUNTER_THRESH + 1 : -UI_COUNTER_THRESH - 1;
+
+    ui_eventQueueHead = 0;
+    ui_eventQueueTail = 0;
+}
+
+void ui_addEvent(ui_event_t eventToAdd)
+{
+    ui_eventQueue[ui_eventQueueHead] = eventToAdd;
+    ui_eventQueueHead = UI_EVENT_QUEUE_BITMASK & (ui_eventQueueHead + 1);
+}
+
+void ui_processButton(int index, bool currentState, ui_event_t eventToGenerateWhenPressed, ui_event_t eventToGenerateWhenReleased)
+{
+    if (currentState)
+    {
+        // was not depressed before
+        if (buttonCounters[index] <= 0)
+            buttonCounters[index] = 1;
+        // was depressed before
+        else if (buttonCounters[index] > 0)
+        {
+            if (buttonCounters[index] == UI_COUNTER_THRESH)
+            {
+                buttonCounters[index]++;
+                ui_addEvent(eventToGenerateWhenPressed);
+            }
+            else if (buttonCounters[index] < UI_COUNTER_THRESH)
+                buttonCounters[index]++;
+        }
+    }
+    else 
+    {
+        // was depressed before
+        if (buttonCounters[index] >= 0)
+            buttonCounters[index] = -1;
+        // was not depressed before
+        else if (buttonCounters[index] > 0)
+        {
+            if (buttonCounters[index] == -UI_COUNTER_THRESH)
+            {
+                buttonCounters[index]--;
+                ui_addEvent(eventToGenerateWhenReleased);
+            }
+            else if (buttonCounters[index] > -UI_COUNTER_THRESH)
+                buttonCounters[index]--;
+        }
+    }
+}
+
+void ui_processButtons()
+{
+    ui_processButton(0, BUTTON_PREV_DOWN, ui_event_prev_pressed, ui_event_prev_released);
+    ui_processButton(1, BUTTON_NEXT_DOWN, ui_event_next_pressed, ui_event_next_released);
+}
+
+ui_event_t ui_getNextEvent()
+{
+    if (ui_eventQueueHead == ui_eventQueueTail)
+        return ui_event_none;
+    else 
+    {
+        ui_event_t event = ui_eventQueue[ui_eventQueueTail];
+        ui_eventQueueTail = UI_EVENT_QUEUE_BITMASK & (ui_eventQueueTail + 1);
+        return event;
+    }
+}
+
+// Init
+
+void ui_init() 
+{
+    // setup GPIO clocks
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+
+	// LED outputs
+    ui_setup_led_pin(LED_GREEN_PORT, LED_GREEN_PIN);
+    ui_setup_led_pin(LED_RED_PORT, LED_RED_PIN);
+
+    // Button inputs
+    ui_setup_button_pin(BUTTON_PREV_PORT, BUTTON_PREV_PIN);
+    ui_setup_button_pin(BUTTON_NEXT_PORT, BUTTON_NEXT_PIN);
+
+    ui_initLeds();
+    ui_initButtons();
 }
