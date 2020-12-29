@@ -284,7 +284,7 @@ OBJ_FILES      = $(CC_FILES:.cc=.o) $(C_FILES:.c=.o) $(AS_FILES:.s=.o)
 OBJS           = $(patsubst %,$(BUILD_DIR)%,$(OBJ_FILES)) $(STARTUP_OBJ)
 DEPS           = $(OBJS:.o=.d)
 
-all: $(BUILD_DIR) $(TARGET_HEX)
+all: $(BUILD_DIR) $(TARGET_HEX) $(TARGET_BIN)
 
 # ------------------------------------------------------------------------------
 # Main rules
