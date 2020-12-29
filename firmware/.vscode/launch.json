@@ -35,12 +35,12 @@
             },
             "linux": {
                 "MIMode": "gdb",
-                "MIDebuggerPath": "~/dev/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gdb",
+                "MIDebuggerPath": "${env:HOME}/dev/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gdb",
                 "debugServerPath": "openocd"
             },
             "osx": {
                 "MIMode": "gdb",
-                "MIDebuggerPath": "~/dev/gcc-arm-none-eabi-4_8-2014q3/bin/arm-none-eabi-gdb",
+                "MIDebuggerPath": "${env:HOME}/dev/gcc-arm-none-eabi-4_8-2014q3/bin/arm-none-eabi-gdb",
                 "debugServerPath": "openocd"
             },
             "windows": {
