@@ -24,3 +24,6 @@ depends.mk
 
 # build directory
 firmware/build
+
+# untracked hardware files
+*.kicad_pcb-bak
