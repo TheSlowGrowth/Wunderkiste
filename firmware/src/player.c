@@ -26,6 +26,7 @@ char					*read_ptr;
 char                    szArtist[120];
 char                    szTitle[120];
 uint32_t                bytesRead;
+uint32_t 				numSamplesPlayed;
 
 // directory browsing
 #define PATH_BUFFER_SIZE 256
@@ -75,7 +76,7 @@ void pl_init()
 
 bool pl_isPlaying()
 {
-    return status == playing;
+    return (status == playing) || (status == endOfFile);
 }
 
 const char *get_filename_ext(const char *filename) {
@@ -251,9 +252,36 @@ void pl_stop()
     SetAudioVolume(0);
 }
 
+void pl_restart()
+{
+	if (!pl_isPlaying())
+		return;
+
+	char buffer[2 * PATH_BUFFER_SIZE];
+    sprintf(buffer, "%s/%s", dirPath, sortedFileList[currentFile]);
+    // start playing
+    pl_playMp3(buffer);
+}
+
+uint32_t pl_getMsPlayedInCurrentFile()
+{
+	if (!pl_isPlaying())
+		return 0;
+	return (numSamplesPlayed * 10) / 441;
+}
+
+int16_t pl_getCurrentFileIndex() 
+{
+	if (!pl_isPlaying())
+		return -1;
+	return currentFile;
+}
+
 
 void pl_playMp3(const char* filename) {
 	FRESULT res;
+
+	numSamplesPlayed = 0;
 
 	bytes_left = FILE_READ_BUFFER_SIZE;
 	read_ptr = file_read_buffer;
@@ -416,6 +444,7 @@ static void AudioCallback(void *context, int buffer) {
 	}
 
 	if (!outOfData) {
+		numSamplesPlayed += mp3FrameInfo.outputSamps / mp3FrameInfo.nChans;
 		ProvideAudioBuffer(samples, mp3FrameInfo.outputSamps);
 	}
 }

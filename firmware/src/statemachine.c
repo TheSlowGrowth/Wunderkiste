@@ -9,10 +9,9 @@
 #include "stm32f4xx_gpio.h"
 #include "ff.h"
 #include "main.h"
+#include "UI.h"
 
 // Macros
-#define BUTTON_NEXT			(!(GPIOA->IDR & GPIO_Pin_3))
-#define BUTTON_PREV			(!(GPIOA->IDR & GPIO_Pin_2))
 #define POWER_ON			GPIO_ResetBits(GPIOA, GPIO_Pin_1)
 #define POWER_OFF			GPIO_SetBits(GPIOA, GPIO_Pin_1)
 #define POWER_TIMEOUT_MAX   2600
@@ -68,6 +67,8 @@ void stateMachine_StorageRemoved()
 
 void stateMachine_run()
 {
+    ui_event_t uiEvent = ui_getNextEvent();
+
     switch (mstate)
     {
         // wait for storage
@@ -200,17 +201,23 @@ void stateMachine_run()
                 pl_stop();
             }
 
-    		if (BUTTON_NEXT)
+    		if (uiEvent == ui_event_next_pressed)
     		{
-    			while (BUTTON_NEXT) {};
     			if (!pl_next(false))
                     stateMachine_playbackFinished();
     		}
-            if (BUTTON_PREV)
+            if (uiEvent == ui_event_prev_pressed)
     		{
-    			while (BUTTON_PREV) {};
-    			if (!pl_prev(false))
-                    stateMachine_playbackFinished();
+                // start previous track if current track just started and we're not on the first track
+                if ((pl_getMsPlayedInCurrentFile() < 2000) && (pl_getCurrentFileIndex() > 0))
+                {
+                    if (!pl_prev(false))
+                        stateMachine_playbackFinished();
+                }
+                // restart if current track played for a while
+                else 
+                    pl_restart();
+                    
     		}
             break;
         }

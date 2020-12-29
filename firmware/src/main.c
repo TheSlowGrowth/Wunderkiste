@@ -43,7 +43,7 @@ void updateUI()
 			break;
 		}
 	}
-	ui_process();
+	ui_processLeds();
 }
 
 /*
@@ -91,6 +91,7 @@ int main(void) {
 
 	for(;;) {
 		pl_run();
+		ui_processButtons();
 
 		// check RFID only every now and then
 		cycleCounter++;
