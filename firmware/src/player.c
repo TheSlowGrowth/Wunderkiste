@@ -25,7 +25,7 @@ volatile int			bytes_left;
 char					*read_ptr;
 char                    szArtist[120];
 char                    szTitle[120];
-uint32_t            br;
+uint32_t                bytesRead;
 
 // directory browsing
 #define PATH_BUFFER_SIZE 256
@@ -263,7 +263,7 @@ void pl_playMp3(const char* filename) {
 		Mp3ReadId3V2Tag(&file, szArtist, sizeof(szArtist), szTitle, sizeof(szTitle));
 
 		// Fill buffer
-		res = f_read(&file, file_read_buffer, FILE_READ_BUFFER_SIZE, &br);
+		res = f_read(&file, file_read_buffer, FILE_READ_BUFFER_SIZE, &bytesRead);
         if (res != FR_OK)
         {
             f_close(&file);
@@ -311,9 +311,9 @@ void pl_run()
             read_ptr = file_read_buffer;
 
             // Read next part of file
-            unsigned int btr;
-            btr = FILE_READ_BUFFER_SIZE - bytes_left;
-            FRESULT res = f_read(&file, file_read_buffer + bytes_left, btr, &br);
+            unsigned int bytesToRead;
+            bytesToRead = FILE_READ_BUFFER_SIZE - bytes_left;
+            FRESULT res = f_read(&file, file_read_buffer + bytes_left, bytesToRead, &bytesRead);
 
             // Update the bytes left variable
             bytes_left = FILE_READ_BUFFER_SIZE;
@@ -326,7 +326,7 @@ void pl_run()
             // out of data - move to the next file, but stop at end of directory
             // TODO: This will abort when filling the buffer reaches the end of
             // the file. What's in the buffer won't be played anymore
-            if (br < btr)
+            if (bytesRead < bytesToRead)
             {
                 status = done;
             }
@@ -355,12 +355,8 @@ static void AudioCallback(void *context, int buffer) {
 	int16_t *samples;
 	if (buffer) {
 		samples = audio_buffer0;
-		//GPIO_SetBits(GPIOD, GPIO_Pin_13);
-		//GPIO_ResetBits(GPIOD, GPIO_Pin_14);
 	} else {
 		samples = audio_buffer1;
-		//GPIO_SetBits(GPIOD, GPIO_Pin_14);
-		//GPIO_ResetBits(GPIOD, GPIO_Pin_13);
 	}
 
 	offset = MP3FindSyncWord((unsigned char*)read_ptr, bytes_left);
@@ -400,10 +396,6 @@ static void AudioCallback(void *context, int buffer) {
 	if (!outOfData) {
 		ProvideAudioBuffer(samples, mp3FrameInfo.outputSamps);
 	}
-
-    // trigger the software interrupt that reads the next portion of the file
-    //if (bytes_left < (FILE_READ_BUFFER_SIZE / 2))
-    //    EXTI_GenerateSWInterrupt(EXTI_Line0);
 }
 
 /*
