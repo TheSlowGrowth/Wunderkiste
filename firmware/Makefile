@@ -73,7 +73,7 @@ PGM_SERIAL_VERIFY ?= -v
 
 # --- You should not have to modify these --------------------------------------
 
-STM32_PATH     = third_party/STM
+STM32_PATH     = lib/STM
 
 # --- Do not modify anything below this point ----------------------------------
 
