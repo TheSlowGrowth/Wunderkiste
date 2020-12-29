@@ -25,7 +25,7 @@ volatile int			bytes_left;
 char					*read_ptr;
 char                    szArtist[120];
 char                    szTitle[120];
-uint32_t            br;
+uint32_t                bytesRead;
 
 // directory browsing
 #define PATH_BUFFER_SIZE 256
@@ -40,6 +40,7 @@ DIR                     dir;
 typedef enum {
     idle,
     playing,
+	endOfFile,
     done
 } pl_status_t;
 pl_status_t status;
@@ -263,7 +264,7 @@ void pl_playMp3(const char* filename) {
 		Mp3ReadId3V2Tag(&file, szArtist, sizeof(szArtist), szTitle, sizeof(szTitle));
 
 		// Fill buffer
-		res = f_read(&file, file_read_buffer, FILE_READ_BUFFER_SIZE, &br);
+		res = f_read(&file, file_read_buffer, FILE_READ_BUFFER_SIZE, &bytesRead);
         if (res != FR_OK)
         {
             f_close(&file);
@@ -311,9 +312,10 @@ void pl_run()
             read_ptr = file_read_buffer;
 
             // Read next part of file
-            unsigned int btr;
-            btr = FILE_READ_BUFFER_SIZE - bytes_left;
-            FRESULT res = f_read(&file, file_read_buffer + bytes_left, btr, &br);
+            unsigned int bytesToRead;
+            bytesToRead = FILE_READ_BUFFER_SIZE - bytes_left;
+			char* buffPtr = file_read_buffer + bytes_left;
+            FRESULT res = f_read(&file, buffPtr, bytesToRead, &bytesRead);
 
             // Update the bytes left variable
             bytes_left = FILE_READ_BUFFER_SIZE;
@@ -323,20 +325,26 @@ void pl_run()
                 pl_stop();
                 return;
             }
-            // out of data - move to the next file, but stop at end of directory
-            // TODO: This will abort when filling the buffer reaches the end of
-            // the file. What's in the buffer won't be played anymore
-            if (br < btr)
+            // out of data - end of file reached. Fill the rest of the buffer with zeros.
+            if (bytesRead < bytesToRead)
             {
-                status = done;
+				for (uint32_t i = bytesRead; i < bytesToRead; i++)
+					buffPtr[i] = 0;
+                status = endOfFile;
             }
         }
     }
-    else if (status == done)
-    {
-        if (!pl_next(false))
-            stateMachine_playbackFinished();
-    }
+	else if (status == endOfFile)
+	{
+		// wait until the current buffer is all processed, then finish.
+		if (bytes_left == 0)
+		{
+			status = done;
+			// go to the next file on the folder, or finish if all files have been played.
+			if (!pl_next(false))
+				stateMachine_playbackFinished();
+		}
+	}
 }
 
 /*
@@ -355,12 +363,18 @@ static void AudioCallback(void *context, int buffer) {
 	int16_t *samples;
 	if (buffer) {
 		samples = audio_buffer0;
-		//GPIO_SetBits(GPIOD, GPIO_Pin_13);
-		//GPIO_ResetBits(GPIOD, GPIO_Pin_14);
 	} else {
 		samples = audio_buffer1;
-		//GPIO_SetBits(GPIOD, GPIO_Pin_14);
-		//GPIO_ResetBits(GPIOD, GPIO_Pin_13);
+	}
+
+	// provide zeroes when out of data
+	if (bytes_left <= 0)
+	{
+		const int numSamplesToProvide = sizeof(audio_buffer0);
+		for (uint32_t i = 0; i < numSamplesToProvide; i++)
+			samples[i] = 0;
+		ProvideAudioBuffer(samples, numSamplesToProvide);
+		return;
 	}
 
 	offset = MP3FindSyncWord((unsigned char*)read_ptr, bytes_left);
@@ -374,6 +388,8 @@ static void AudioCallback(void *context, int buffer) {
 		switch (err) {
 		case ERR_MP3_INDATA_UNDERFLOW:
 			outOfData = 1;
+			// stop playback
+			bytes_left = 0;
 			break;
 		case ERR_MP3_MAINDATA_UNDERFLOW:
 			/* do nothing - next call to decode will provide more mainData */
@@ -381,6 +397,8 @@ static void AudioCallback(void *context, int buffer) {
 		case ERR_MP3_FREE_BITRATE_SYNC:
 		default:
 			outOfData = 1;
+			// stop playback
+			bytes_left = 0;
 			break;
 		}
 	} else {
@@ -400,10 +418,6 @@ static void AudioCallback(void *context, int buffer) {
 	if (!outOfData) {
 		ProvideAudioBuffer(samples, mp3FrameInfo.outputSamps);
 	}
-
-    // trigger the software interrupt that reads the next portion of the file
-    //if (bytes_left < (FILE_READ_BUFFER_SIZE / 2))
-    //    EXTI_GenerateSWInterrupt(EXTI_Line0);
 }
 
 /*
