@@ -94,7 +94,7 @@ void stateMachine_run()
             else
                 // all folders linked, go to playback
                 mstate = stWaitingForTag;
-                power_timeout = 0;
+            power_timeout = 0;
             break;
         }
         // wait for user to add a tag to link this folder to
