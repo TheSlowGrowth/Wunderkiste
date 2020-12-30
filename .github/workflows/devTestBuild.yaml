@@ -1,11 +1,8 @@
-name: pullRequestBuild
+name: Dev Test Build
 on: 
   # run for all pull requests
-  pull_request:
   # Run for all commits on feature branches
-  push:
-    branches:    
-      - 'feature/**'
+  [ push, pull_request ]
 jobs:
   ###############################################################################
   # builds the firmware on arm-none-eabi-gcc
