@@ -4,7 +4,7 @@
 
 A portable music player for children
 
-<a href="https://raw.githubusercontent.com/TheSlowGrowth/Wunderkiste/feature/documentation/docs/images/photo_wunderkiste_title.jpg"><img src="https://raw.githubusercontent.com/TheSlowGrowth/Wunderkiste/feature/documentation/docs/images/photo_wunderkiste_title.jpg" width="500"></a>
+<a href="https://raw.githubusercontent.com/TheSlowGrowth/Wunderkiste/master/docs/images/photo_wunderkiste_title.jpg"><img src="https://raw.githubusercontent.com/TheSlowGrowth/Wunderkiste/master/docs/images/photo_wunderkiste_title.jpg" width="500"></a>
 
 Wunderkiste is a portable music player for young children. It's designed to be very easy to use so that even a 2 year-old child can quickly understand how it works. The whole projects is entirely open source so that YOU can build and modify it easily.
 
