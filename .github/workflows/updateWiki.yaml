@@ -5,16 +5,17 @@ on:
     branches: "master"
 
 jobs:
-  build:
+  updateWiki:
+    name: "Update Wiki from ./docs/wiki/ directory"
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
       # Additional steps to generate documentation in "Documentation" directory
       - name: Upload Documentation to Wiki
-        uses: SwiftDocOrg/github-wiki-publish-action@v1
+        uses: SwiftDocOrg/github-wiki-publish-action@rsync
         with:
-          path: "docs/wiki"
+          path: "docs/wiki/"
         env:
           GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
