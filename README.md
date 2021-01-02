@@ -1,6 +1,7 @@
 # Wunderkiste
 
 ![Firmware Checks](https://github.com/TheSlowGrowth/Wunderkiste/workflows/Firmware%20Checks/badge.svg?branch=master)
+![Hardware Checks](https://github.com/TheSlowGrowth/Wunderkiste/workflows/Hardware%20Checks/badge.svg?branch=master)
 
 A portable music player for children
 
