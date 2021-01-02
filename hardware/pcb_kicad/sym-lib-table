@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name Wunderkiste-symbols)(type Legacy)(uri ${KIPRJMOD}/../library_kicad/Wunderkiste-symbols.lib)(options "")(descr ""))
+)
