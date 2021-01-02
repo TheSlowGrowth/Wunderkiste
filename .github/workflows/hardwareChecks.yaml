@@ -1,0 +1,28 @@
+name: Hardware Checks
+
+on:
+  push:
+    paths:
+    - '**.sch'
+    - '**.kicad_pcb'
+  pull_request:
+    paths:
+      - '**.sch'
+      - '**.kicad_pcb'
+
+jobs:
+  KiBot:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: TheSlowGrowth/KiBot@feature/install-kicad-git-filters
+      with:
+        config: 'hardware/pcb_kicad/Wunderkiste.kibot.yaml'
+        schema: 'hardware/pcb_kicad/Wunderkiste.sch'
+        board: 'hardware/pcb_kicad/Wunderkiste.kicad_pcb'
+        dir: PCB_Files
+    - name: upload results
+      uses: actions/upload-artifact@v2
+      with:
+        name: PCB_Files
+        path: PCB_Files
