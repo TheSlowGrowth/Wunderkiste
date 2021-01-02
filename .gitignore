@@ -11,14 +11,13 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Binary images
 *.hex
 *.bin
 *.elf
 
-# other build products 
+# other build products
 *.map
 depends.mk
 
@@ -27,3 +26,5 @@ firmware/build
 
 # untracked hardware files
 *.kicad_pcb-bak
+*-cache.lib
+*.sch-bak

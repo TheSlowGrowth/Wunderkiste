@@ -19,12 +19,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
+      - name: Build Firmware
         run: |
           cd firmware
           make all TOOLCHAIN_PATH=""
 
-      - name: Create Release
+      - name: Generate Hardware Design Files
+        uses: TheSlowGrowth/KiBot@feature/install-kicad-git-filters
+        with:
+          config: 'hardware/pcb_kicad/Wunderkiste.kibot.yaml'
+          schema: 'hardware/pcb_kicad/Wunderkiste.sch'
+          board: 'hardware/pcb_kicad/Wunderkiste.kicad_pcb'
+          dir: PCB_Files
+      - name: Zip Hardware Design Files
+        uses: papeloto/action-zip@v1
+        with:
+          files: PCB_Files
+          dest: PCB_Files.zip
+
+      - name: Create Release Draft
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
@@ -36,5 +49,6 @@ jobs:
           files: |
             ./firmware/build/Wunderkiste/Wunderkiste.hex
             ./firmware/build/Wunderkiste/Wunderkiste.bin
+            ./PCB_Files.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

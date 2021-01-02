@@ -1,6 +1,7 @@
 # Wunderkiste
 
-![Dev Test Build](https://github.com/TheSlowGrowth/Wunderkiste/workflows/Dev%20Test%20Build/badge.svg?branch=master)
+![Firmware Checks](https://github.com/TheSlowGrowth/Wunderkiste/workflows/Firmware%20Checks/badge.svg?branch=master)
+![Hardware Checks](https://github.com/TheSlowGrowth/Wunderkiste/workflows/Hardware%20Checks/badge.svg?branch=master)
 
 A portable music player for children
 
@@ -28,26 +29,23 @@ We collected a lot of information in the [Wiki tab of this repository](https://g
 
 # Project structure
 
-This software repository is the place where we collect everything needed to build, use, improve and customize your Wunderkiste. 
+This software repository is the place where we collect everything needed to build, use, improve and customize your Wunderkiste.
 
-The repository contains 
+The repository contains
 - The source code for the firmware in the `firmware` directory.
 - The hardware design files for the printed circuit boards in the `hardware` directory.
 - Documentation and guides in the `docs` directory.
-- The sources for the [Wiki](https://github.com/TheSlowGrowth/Wunderkiste/wiki) in the `docs/wiki` directory. They are automatically copied to the project wiki when pull requests are merged. 
+- The sources for the [Wiki](https://github.com/TheSlowGrowth/Wunderkiste/wiki) in the `docs/wiki` directory. They are automatically copied to the project wiki when pull requests are merged.
 - CI actions in the `.github` directory (automated tests, release artifacts generation, etc.)
 
-In addition to that, the github page contains 
+In addition to that, the github page contains
 - [The Wiki tab](https://github.com/TheSlowGrowth/Wunderkiste/wiki) where you'll find a lot of resources
 - [The Releases tab](https://github.com/TheSlowGrowth/Wunderkiste/releases) where you'll find all releases and the corresponding firmware images and other documents.
 
-# How to contribute 
+# How to contribute
 
 Wunderkiste is open to use and modify by everyone. When we work together on this project, we can truely make something unique and wonderful. Please don't be shy to help improve this project!
 
 - If you find something that you feel needs an improvement, feel free to [open an issue on the issues tab](https://github.com/TheSlowGrowth/Wunderkiste/issues) and let us know.
 - [Browse the issues tab](https://github.com/TheSlowGrowth/Wunderkiste/issues) to see what's to do and where help is needed.
 - [Fork this repo and make some changes](https://guides.github.com/activities/forking/), then open a pull request. We'll review your changes and merge them into this repository.
-
-
-

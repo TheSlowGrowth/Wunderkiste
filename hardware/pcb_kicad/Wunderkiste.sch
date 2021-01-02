@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L stm32f4_discovery:STM32F4_Discovery J4
+L Wunderkiste-symbols:STM32F4_Discovery-stm32f4_discovery J4
 U 1 1 5F839D3D
 P 5750 2350
 F 0 "J4" H 5750 3837 60  0000 C CNN
@@ -25,7 +25,7 @@ F 3 "" H 5750 2700 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L ell_special:SD_Card_Det J2
+L Wunderkiste-symbols:SD_Card_Det-ell_special J2
 U 1 1 5F8549A8
 P 9950 2100
 F 0 "J2" H 9900 2917 50  0000 C CNN
@@ -302,7 +302,7 @@ F 3 "" H 10350 1150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L ell_special:RFID_RC522_Board U2
+L Wunderkiste-symbols:RFID_RC522_Board-ell_special U2
 U 1 1 5F874E4B
 P 5250 7050
 F 0 "U2" H 6028 7096 50  0000 L CNN
@@ -912,7 +912,7 @@ AMP_STBY_T
 Text Notes 5950 5550 0    50   ~ 0
 L\nGND\nR
 $Comp
-L ell_potentiometers:POTENTIOMETER_Dual_Separate RV1
+L Wunderkiste-symbols:POTENTIOMETER_Dual_Separate-ell_potentiometers RV1
 U 1 1 5F9EB8E0
 P 7450 5750
 F 0 "RV1" H 7306 5796 50  0000 R CNN
@@ -923,7 +923,7 @@ F 3 "" H 7450 5750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L ell_potentiometers:POTENTIOMETER_Dual_Separate RV1
+L Wunderkiste-symbols:POTENTIOMETER_Dual_Separate-ell_potentiometers RV1
 U 2 1 5F9EC2AD
 P 8050 5950
 F 0 "RV1" H 7906 5996 50  0000 R CNN
@@ -1079,7 +1079,7 @@ Wire Wire Line
 	2650 2950 2750 2950
 Connection ~ 2750 2950
 $Comp
-L Connector:USB_B J5
+L Wunderkiste-symbols:USB_B-Connector J5
 U 1 1 5FC35574
 P 950 3150
 F 0 "J5" H 1007 3617 50  0000 C CNN
@@ -1761,10 +1761,10 @@ Connection ~ 9550 6050
 Wire Wire Line
 	9550 6050 9650 6050
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0102
 U 1 1 5FAB1CB2
 P 9250 4800
-F 0 "#PWR?" H 9250 4550 50  0001 C CNN
+F 0 "#PWR0102" H 9250 4550 50  0001 C CNN
 F 1 "GND" H 9350 4650 50  0000 C CNN
 F 2 "" H 9250 4800 50  0001 C CNN
 F 3 "" H 9250 4800 50  0001 C CNN
@@ -1772,10 +1772,10 @@ F 3 "" H 9250 4800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0103
 U 1 1 5FB4603B
 P 9550 5600
-F 0 "#PWR?" H 9550 5350 50  0001 C CNN
+F 0 "#PWR0103" H 9550 5350 50  0001 C CNN
 F 1 "GND" H 9650 5450 50  0000 C CNN
 F 2 "" H 9550 5600 50  0001 C CNN
 F 3 "" H 9550 5600 50  0001 C CNN
@@ -1783,10 +1783,10 @@ F 3 "" H 9550 5600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0104
 U 1 1 5FB4649E
 P 9550 6400
-F 0 "#PWR?" H 9550 6150 50  0001 C CNN
+F 0 "#PWR0104" H 9550 6150 50  0001 C CNN
 F 1 "GND" H 9650 6250 50  0000 C CNN
 F 2 "" H 9550 6400 50  0001 C CNN
 F 3 "" H 9550 6400 50  0001 C CNN
@@ -1794,10 +1794,10 @@ F 3 "" H 9550 6400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0105
 U 1 1 5FB46934
 P 7450 6250
-F 0 "#PWR?" H 7450 6000 50  0001 C CNN
+F 0 "#PWR0105" H 7450 6000 50  0001 C CNN
 F 1 "GND" H 7550 6100 50  0000 C CNN
 F 2 "" H 7450 6250 50  0001 C CNN
 F 3 "" H 7450 6250 50  0001 C CNN
@@ -1805,14 +1805,36 @@ F 3 "" H 7450 6250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0106
 U 1 1 5FB46E68
 P 8500 6250
-F 0 "#PWR?" H 8500 6000 50  0001 C CNN
+F 0 "#PWR0106" H 8500 6000 50  0001 C CNN
 F 1 "GND" H 8600 6100 50  0000 C CNN
 F 2 "" H 8500 6250 50  0001 C CNN
 F 3 "" H 8500 6250 50  0001 C CNN
 	1    8500 6250
 	1    0    0    -1  
+$EndComp
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 6033977A
+P 3500 2850
+F 0 "#FLG0101" H 3500 2925 50  0001 C CNN
+F 1 "PWR_FLAG" V 3500 2978 50  0000 L CNN
+F 2 "" H 3500 2850 50  0001 C CNN
+F 3 "~" H 3500 2850 50  0001 C CNN
+	1    3500 2850
+	0    1    1    0   
+$EndComp
+$Comp
+L power:PWR_FLAG #FLG?
+U 1 1 6033BE7D
+P 6800 1300
+F 0 "#FLG?" H 6800 1375 50  0001 C CNN
+F 1 "PWR_FLAG" V 6800 1428 50  0000 L CNN
+F 2 "" H 6800 1300 50  0001 C CNN
+F 3 "~" H 6800 1300 50  0001 C CNN
+	1    6800 1300
+	0    1    1    0   
 $EndComp
 $EndSCHEMATC

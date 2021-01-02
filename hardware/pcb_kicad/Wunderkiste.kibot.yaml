@@ -1,0 +1,51 @@
+kibot:
+  version: 1
+
+preflight:
+  run_erc: true
+  update_xml: false
+  run_drc: true
+  check_zone_fills: true
+  ignore_unconnected: true
+
+global:
+  output: '%f_rev_%r-%i.%x'
+
+outputs:
+  - name: 'Generate gerbers'
+    comment: "Generate gerber files for PCB fabrication"
+    type: gerber
+    dir: gerbers
+    options:
+      # generic layer options
+      exclude_edge_layer: false
+      exclude_pads_from_silkscreen: true
+      plot_sheet_reference: false
+      plot_footprint_refs: true
+      plot_footprint_values: true
+      force_plot_invisible_refs_vals: false
+      tent_vias: true
+      line_width: 0.1
+      # gerber options
+      use_aux_axis_as_origin: false
+      subtract_mask_from_silk: true
+      use_protel_extensions: false
+      gerber_precision: 4.6
+      create_gerber_job_file: true
+      use_gerber_x2_attributes: true
+      use_gerber_net_attributes: false
+    layers:
+      - 'copper'
+      - 'technical'
+  - name: 'Generate drill files'
+    comment: "Generate drill files for PCB fabrication"
+    type: excellon
+    dir: gerbers
+  - name: 'Generate interactive BOM'
+    comment: "Generate interactive BOM as a HTML page"
+    type: ibom
+    dir: ibom
+  - name: 'Generate schematic PDF'
+    comment: "Generate schematic PDF file"
+    type: pdf_sch_print
+    dir: pdf

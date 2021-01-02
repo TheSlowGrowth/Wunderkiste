@@ -1,5 +1,5 @@
-name: Dev Test Build
-on: 
+name: Firmware Checks
+on:
   # run for all pull requests
   # Run for all commits on feature branches
   [ push, pull_request ]
