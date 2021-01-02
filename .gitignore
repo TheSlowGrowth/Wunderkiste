@@ -27,3 +27,4 @@ firmware/build
 # untracked hardware files
 *.kicad_pcb-bak
 *-cache.lib
+*.sch-bak
