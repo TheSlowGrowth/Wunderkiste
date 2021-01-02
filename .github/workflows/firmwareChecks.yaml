@@ -2,7 +2,12 @@ name: Firmware Checks
 on:
   # run for all pull requests
   # Run for all commits on feature branches
-  [ push, pull_request ]
+  push:
+    paths:
+    - 'firmware/**'
+  pull_request:
+    paths:
+    - 'firmware/**'
 jobs:
   ###############################################################################
   # builds the firmware on arm-none-eabi-gcc
