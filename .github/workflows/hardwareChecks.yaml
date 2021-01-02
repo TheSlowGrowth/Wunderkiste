@@ -5,10 +5,12 @@ on:
     paths:
     - '**.sch'
     - '**.kicad_pcb'
+    - '**.kibot.yaml'
   pull_request:
     paths:
       - '**.sch'
       - '**.kicad_pcb'
+      - '**.kibot.yaml'
 
 jobs:
   KiBot:

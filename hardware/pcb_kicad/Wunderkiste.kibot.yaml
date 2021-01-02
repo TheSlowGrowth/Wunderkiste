@@ -41,6 +41,16 @@ outputs:
     comment: "Generate drill files for PCB fabrication"
     type: excellon
     dir: gerbers
+  - name: 'Generate drill template'
+    comment: "Generate drill template for case manufacturing"
+    type: pdf
+    dir: pdf
+    layers:
+      - 'Dwgs.User'
+    output: "Drill_Template.%x"
+    options:
+      output: "Drill_Template.%x"
+      mirror_plot: true
   - name: 'Generate interactive BOM'
     comment: "Generate interactive BOM as a HTML page"
     type: ibom
