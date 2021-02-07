@@ -5,9 +5,11 @@ on:
   push:
     paths:
     - 'firmware/**'
+    - '.github/workflows/**'
   pull_request:
     paths:
     - 'firmware/**'
+    - '.github/workflows/**'
 jobs:
   ###############################################################################
   # builds the firmware on arm-none-eabi-gcc
