@@ -2,13 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C++ Launch",
+            "name": "Launch On Hardware",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/Wunderkiste/Wunderkiste.elf",
+            "program": "${workspaceRoot}/firmware/build/Wunderkiste/Wunderkiste.elf",
             "args": [],
             "stopAtEntry": true,
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}/firmware",
             "environment": [],
             "externalConsole": false,
             "debugServerArgs": "-f interface/stlink-v2-1.cfg -f target/stm32f4x.cfg -c init -c \"reset init\"",
@@ -40,7 +40,7 @@
             },
             "osx": {
                 "MIMode": "gdb",
-                "MIDebuggerPath": "${env:HOME}/dev/gcc-arm-none-eabi-4_8-2014q3/bin/arm-none-eabi-gdb",
+                "MIDebuggerPath": "${env:HOME}/dev/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gdb",
                 "debugServerPath": "openocd"
             },
             "windows": {
@@ -59,6 +59,22 @@
                     { "text": "-target-download", "description": "flash target", "ignoreFailures": false }
                 ]
             }
+        },
+        {
+            "name": "Launch Tests Locally",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/firmware/tests/build/bin/Wunderkiste_gtest",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/firmware/tests/build/bin",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "logging": {
+                "engineLogging": false
+            },
+            "preLaunchTask": "buildTests-Wunderkiste",
         }
     ]
 }
