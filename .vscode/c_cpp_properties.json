@@ -4,16 +4,16 @@
             "name": "Win32",
             "includePath": [
                 "~/dev/gcc-arm-none-eabi-9-2020-q2-update/include",
-                "${workspaceRoot}/",
-                "${workspaceRoot}/inc",
-                "${workspaceRoot}/lib",
-                "${workspaceRoot}/lib/tm_stm32f4_fatfs",
-                "${workspaceRoot}/lib/helix",
-                "${workspaceRoot}/lib/helix/pub",
-                "${workspaceRoot}/lib/Core/cmsis",
-                "${workspaceRoot}/lib/Core/stm32",
-                "${workspaceRoot}/lib/StdPeriph/inc",
-                "${workspaceFolder}/tests/googletest/googletest/include"
+                "${workspaceRoot}/firmware/",
+                "${workspaceRoot}/firmware/inc",
+                "${workspaceRoot}/firmware/lib",
+                "${workspaceRoot}/firmware/lib/tm_stm32f4_fatfs",
+                "${workspaceRoot}/firmware/lib/helix",
+                "${workspaceRoot}/firmware/lib/helix/pub",
+                "${workspaceRoot}/firmware/lib/Core/cmsis",
+                "${workspaceRoot}/firmware/lib/Core/stm32",
+                "${workspaceRoot}/firmware/tests/googletest/googletest/include",
+                "${workspaceRoot}/firmware/application"
             ],
             "defines": [
                 "DEBUG=1",
@@ -25,14 +25,14 @@
             "intelliSenseMode": "msvc-x64",
             "browse": {
                 "path": [
-                    "${workspaceRoot}"
+                    "${workspaceRoot}/firmware"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             },
             "compilerPath": "~/dev/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc",
             "cStandard": "c11",
-            "cppStandard": "gnu++14"
+            "cppStandard": "gnu++17"
         }
     ],
     "version": 4

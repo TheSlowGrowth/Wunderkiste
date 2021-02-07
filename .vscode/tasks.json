@@ -13,16 +13,54 @@
     "tasks": [
         {
             "label": "build-Wunderkiste",
-            "osx": {
-                "command": "make",
-                "args": [
-                    "all"
-                ]
+            "command": "make",
+            "args": [
+                "all"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/firmware"
             },
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}/firmware"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "clean-Wunderkiste",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "options": {
+                    "cwd": "${workspaceFolder}/firmware"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "cleanBuild-Wunderkiste",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "clean-Wunderkiste",
+                "build-Wunderkiste"
+            ],
             "problemMatcher": {
                 "owner": "cpp",
                 "fileLocation": [
@@ -41,14 +79,12 @@
         },
         {
             "label": "buildTests-Wunderkiste",
-            "osx": {
-                "command": "make",
-                "args": [
-                    ""
-                ]
-            },
+            "command": "make",
+            "args": [
+                ""
+            ],
             "options": {
-                    "cwd": "${workspaceFolder}/tests"
+                    "cwd": "${workspaceFolder}/firmware/tests"
             },
             "group": {
                 "kind": "build",
@@ -58,7 +94,7 @@
                 "owner": "cpp",
                 "fileLocation": [
                     "relative",
-                    "${workspaceRoot}/tests"
+                    "${workspaceRoot}/firmware/tests"
                 ],
                 "pattern": {
                     "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
@@ -71,30 +107,31 @@
             }
         },
         {
-            "label": "clean-Wunderkiste",
-            "osx": {
-                "command": "make",
-                "args": [
-                    "clean"
-                ]
+            "label": "cleanTests-Wunderkiste",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "options": {
+                    "cwd": "${workspaceFolder}/firmware/tests"
             },
             "problemMatcher": []
         },
         {
-            "label": "clean-build-Wunderkiste",
+            "label": "cleanBuildTests-Wunderkiste",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "dependsOn": [
-                "clean-Wunderkiste",
-                "build-Wunderkiste"
+                "cleanTests-Wunderkiste",
+                "buildTests-Wunderkiste"
             ],
             "problemMatcher": {
                 "owner": "cpp",
                 "fileLocation": [
                     "relative",
-                    "${workspaceRoot}"
+                    "${workspaceRoot}/firmware"
                 ],
                 "pattern": {
                     "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
