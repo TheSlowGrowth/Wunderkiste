@@ -196,7 +196,7 @@ CCFLAGS = \
 			$(INCFLAGS) \
 			$(ARCHFLAGS)
 
-CPPFLAGS = -fno-exceptions -fno-rtti
+CPPFLAGS = -fno-exceptions -fno-rtti -std=c++17
 
 ASFLAGS = $(ARCHFLAGS)
 
