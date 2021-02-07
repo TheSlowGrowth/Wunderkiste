@@ -28,3 +28,5 @@ firmware/build
 *.kicad_pcb-bak
 *-cache.lib
 *.sch-bak
+firmware/tests/build
+firmware/tests/Wunderkiste_gtest

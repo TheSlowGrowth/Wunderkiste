@@ -12,7 +12,8 @@
                 "${workspaceRoot}/lib/helix/pub",
                 "${workspaceRoot}/lib/Core/cmsis",
                 "${workspaceRoot}/lib/Core/stm32",
-                "${workspaceRoot}/lib/StdPeriph/inc"
+                "${workspaceRoot}/lib/StdPeriph/inc",
+                "${workspaceFolder}/tests/googletest/googletest/include"
             ],
             "defines": [
                 "DEBUG=1",

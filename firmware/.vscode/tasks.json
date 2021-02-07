@@ -40,6 +40,37 @@
             }
         },
         {
+            "label": "buildTests-Wunderkiste",
+            "osx": {
+                "command": "make",
+                "args": [
+                    ""
+                ]
+            },
+            "options": {
+                    "cwd": "${workspaceFolder}/tests"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}/tests"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
             "label": "clean-Wunderkiste",
             "osx": {
                 "command": "make",
