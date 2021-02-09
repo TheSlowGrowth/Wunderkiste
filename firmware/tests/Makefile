@@ -18,6 +18,7 @@ SRC_EXT = cpp
 # Find all source files in the source directory, sorted by
 # most recently modified
 SOURCES = $(shell find $(SRC_PATH) -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
 OBJECTS = $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
@@ -33,6 +34,8 @@ INCLUDES = -I /usr/local/include/ \
 		   -I googletest/googletest/ \
 		   -I googletest/googletest/include/ \
 		   -I ../application/ \
+		   -I ../lib/helix/pub/ \
+		   -I .
 
 # Space-separated pkg-config libraries used by this project
 LIBS = -pthread

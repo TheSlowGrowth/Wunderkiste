@@ -1,6 +1,6 @@
 TARGET = Wunderkiste
 # change this to the toolchain installation directory
-TOOLCHAIN_PATH ?= ~/dev/gcc-arm-none-eabi-4_8-2014q3/bin/
+TOOLCHAIN_PATH ?= ~/dev/gcc-arm-none-eabi-9-2020-q2-update/bin/
 
 # System specifications
 F_CRYSTAL      = 8000000L
@@ -12,7 +12,8 @@ FAMILY         = f4xx
 UPLOAD_COMMAND  = upload_jtag_erase_first
 
 # Sources
-C_FILES = $(wildcard src/*.c)
+CC_FILES = $(wildcard application/*.cpp)
+C_FILES = $(wildcard application/*.c)
 # RFID, GPIO, SPI etc.
 INCFLAGS = -Iinc -Ilib/
 C_FILES  += $(wildcard lib/*.c)
@@ -181,9 +182,9 @@ INCFLAGS += \
 			-D$(SYSCLOCK)=$(F_CPU)
 
 CCFLAGS = \
-			-g -O2 -Wall -Werror -Wno-unused-local-typedefs \
+			-g -Wall -Werror -Wno-unused-local-typedefs \
 			-Wno-error=unused-but-set-variable \
-			-std=c99 \
+			-Wno-unused-variable \
 			-fasm \
 			-finline \
 			-finline-functions-called-once \
@@ -193,8 +194,10 @@ CCFLAGS = \
 			-fno-move-loop-invariants \
 			$(INCFLAGS) \
 			$(ARCHFLAGS)
+CCOPT = -O2
 
 CPPFLAGS = -fno-exceptions -fno-rtti -std=c++17
+CPPOPT = -O2
 
 ASFLAGS = $(ARCHFLAGS)
 
@@ -238,11 +241,11 @@ $(BUILD_DIR)%.o: %.s
 
 $(BUILD_DIR)%.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) -c $(CCFLAGS) -std=c99 $< -o $@
+	$(CC) -c $(CCFLAGS) $(CCOPT) -std=c99 $< -o $@
 
-$(BUILD_DIR)%.o: %.cc
+$(BUILD_DIR)%.o: %.cpp
 	mkdir -p $(dir $@)
-	$(CXX) -c $(CCFLAGS) $(CPPFLAGS) $< -o $@
+	$(CXX) -c $(CCFLAGS) $(CPPOPT) $(CPPFLAGS) $< -o $@
 
 $(BUILD_DIR)%.d: %.s
 	mkdir -p $(dir $@)
@@ -252,7 +255,7 @@ $(BUILD_DIR)%.d: %.c
 	mkdir -p $(dir $@)
 	$(CC) -MM $(CCFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
-$(BUILD_DIR)%.d: %.cc
+$(BUILD_DIR)%.d: %.cpp
 	mkdir -p $(dir $@)
 	$(CXX) -MM $(CCFLAGS) $(CPPFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
@@ -278,7 +281,7 @@ $(BUILD_DIR)%.sym: $(BUILD_DIR)%.elf
 # What to build
 # ------------------------------------------------------------------------------
 
-OBJ_FILES      = $(CC_FILES:.cc=.o) $(C_FILES:.c=.o) $(AS_FILES:.s=.o)
+OBJ_FILES      = $(CC_FILES:.cpp=.o) $(C_FILES:.c=.o) $(AS_FILES:.s=.o)
 OBJS           = $(patsubst %,$(BUILD_DIR)%,$(OBJ_FILES)) $(STARTUP_OBJ)
 DEPS           = $(OBJS:.o=.d)
 
