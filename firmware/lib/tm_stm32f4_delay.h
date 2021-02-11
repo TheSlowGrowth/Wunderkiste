@@ -217,9 +217,9 @@ typedef struct {
  * This variable can be used in main
  * It is automatically increased every time systick make an interrupt
  */
-extern __IO volatile uint32_t TM_Time;
-extern __IO volatile uint32_t TM_Time2;
-extern __IO volatile uint32_t mult;
+extern volatile uint32_t TM_Time;
+extern volatile uint32_t TM_Time2;
+extern volatile uint32_t mult;
 
 /**
  * @}

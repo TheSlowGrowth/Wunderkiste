@@ -7,7 +7,7 @@
                 "${workspaceRoot}/firmware/",
                 "${workspaceRoot}/firmware/inc",
                 "${workspaceRoot}/firmware/lib",
-                "${workspaceRoot}/firmware/lib/tm_stm32f4_fatfs",
+                "${workspaceRoot}/firmware/lib/fatfs",
                 "${workspaceRoot}/firmware/lib/helix",
                 "${workspaceRoot}/firmware/lib/helix/pub",
                 "${workspaceRoot}/firmware/lib/Core/cmsis",

@@ -17,11 +17,9 @@ C_FILES = $(wildcard src/*.c)
 INCFLAGS = -Iinc -Ilib/
 C_FILES  += $(wildcard lib/*.c)
 # SD driver and Fatfs
-INCFLAGS += -Ilib/tm_stm32f4_fatfs
-C_FILES += $(wildcard lib/tm_stm32f4_fatfs/*.c)
-C_FILES += $(wildcard lib/tm_stm32f4_fatfs/drivers/*.c)
-C_FILES += $(wildcard lib/tm_stm32f4_fatfs/option/unicode.c)
-C_FILES += $(wildcard lib/tm_stm32f4_fatfs/option/syscall.c)
+INCFLAGS += -Ilib/fatfs
+C_FILES += $(wildcard lib/fatfs/*.c)
+C_FILES += $(wildcard lib/fatfs/drivers/*.c)
 # helix MP3 lib
 INCFLAGS += -Ilib/helix/pub
 C_FILES += $(wildcard lib/helix/real/*.c)
