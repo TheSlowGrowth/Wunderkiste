@@ -57,6 +57,7 @@
                 "kind": "build",
                 "isDefault": true
             },
+            "dependsOrder": "sequence",
             "dependsOn": [
                 "clean-Wunderkiste",
                 "build-Wunderkiste"
@@ -123,6 +124,7 @@
                 "kind": "build",
                 "isDefault": true
             },
+            "dependsOrder": "sequence",
             "dependsOn": [
                 "cleanTests-Wunderkiste",
                 "buildTests-Wunderkiste"
