@@ -113,13 +113,15 @@ public:
     }
 
     /** Closes the file */
-    void close()
+    bool close()
     {
         if (isOpened_)
         {
-            f_close(&fileHandle_);
+            errorCode_ = f_close(&fileHandle_);
             isOpened_ = false;
+            return errorCode_ == FR_OK;
         }
+        return false;
     }
 
     /** Reads up to `numBytesRequested` into `readBuffer`, stores the number
@@ -234,7 +236,7 @@ public:
         virtual UnitTestImpl& operator=(const UnitTestImpl& other) = 0;
         virtual UnitTestImpl& operator=(const char* filePath) = 0;
         virtual bool open(AccessMode accessMode, OpenMode openMode) = 0;
-        virtual void close() = 0;
+        virtual bool close() = 0;
         virtual bool tryRead(char* readBuffer, uint32_t numBytesRequested, uint32_t& numBytesRead) = 0;
         virtual bool readLine(FixedSizeStr<1000>& outputString) = 0;
         virtual size_t getSize() const = 0;
@@ -296,10 +298,11 @@ public:
         return false;
     }
 
-    void close()
+    bool close()
     {
         if (impl_)
-            impl_->close();
+            return impl_->close();
+        return false;
     }
 
     bool tryRead(char* readBuffer, uint32_t numBytesRequested, uint32_t& numBytesRead)

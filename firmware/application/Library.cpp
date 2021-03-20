@@ -172,7 +172,8 @@ bool Library::storeLink(const RfidTagId& tag, const StringType& path) const
     if (!libFile.write(stringToWrite))
         return false;
 
-    return true;
+    // manually close the file to catch disk errors when flusing the buffers
+    return libFile.close();
 }
 
 bool Library::checkLibraryFile()
