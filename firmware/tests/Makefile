@@ -16,8 +16,13 @@ SRC_EXT = cpp
 
 # code lists #
 # Find all source files in the source directory, sorted by
-# most recently modified
-SOURCES = $(shell find $(SRC_PATH) -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+# most recently modified. Providing the full path to find / sort / cut so that
+# cygwin will use the cygwin versions, not the native windows commands
+ifeq ($(OS),Windows_NT)
+	SOURCES = $(shell /usr/bin/find $(SRC_PATH) -name '*.$(SRC_EXT)' | /usr/bin/sort -k 1nr | /usr/bin/cut -f2-)
+else
+	SOURCES = $(shell find $(SRC_PATH) -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+endif
 
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
@@ -29,7 +34,7 @@ OBJECTS += $(BUILD_PATH)/googletest/googletest/src/gtest-all.o
 DEPS = $(OBJECTS:.o=.d)
 
 # flags #
-COMPILE_FLAGS = -std=c++17 -Wall -Wextra -g -Werror -pthread
+COMPILE_FLAGS = -std=gnu++17 -Wall -Wextra -g -Werror -pthread
 INCLUDES = -I /usr/local/include/ \
 		   -I googletest/googletest/ \
 		   -I googletest/googletest/include/ \
