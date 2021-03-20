@@ -5,9 +5,11 @@ on:
   push:
     paths:
     - 'firmware/**'
+    - '.github/workflows/**'
   pull_request:
     paths:
     - 'firmware/**'
+    - '.github/workflows/**'
 jobs:
   ###############################################################################
   # builds the firmware on arm-none-eabi-gcc
@@ -39,3 +41,33 @@ jobs:
       with:
         name: Wunderkiste.bin
         path: firmware/build/Wunderkiste/Wunderkiste.bin
+  
+  ###############################################################################
+  # builds the automated tests with clang; runs tests and exports results
+  googleTest:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: |
+        cd firmware/tests
+        make release
+    
+    - name: Run Tests
+      run: |
+        cd firmware/tests/build/bin
+        ./Wunderkiste_gtest --gtest_output=xml:gtestresults.xml
+    
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: firmware/tests/build/bin/**/*.xml
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+
