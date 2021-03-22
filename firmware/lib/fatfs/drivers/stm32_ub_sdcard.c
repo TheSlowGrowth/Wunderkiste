@@ -81,6 +81,7 @@ static int select(void);
 static int rcvr_datablock (BYTE *buff, UINT btr);
 static int xmit_datablock(const BYTE *buff,BYTE token);
 static BYTE send_cmd (BYTE cmd, DWORD arg);
+static BYTE send_cmd_no_wait_ready (BYTE cmd, DWORD arg);
 void disk_timerproc(void);
 //-------------------------------------------------------------- 
 
@@ -136,9 +137,10 @@ DSTATUS MMC_disk_initialize(void)
   for (n = 10; n; n--) xchg_spi(0xFF);	// Send 80 dummy clocks 
 
   ty = 0;
-  if (send_cmd(CMD0, 0) == 1) { //Put the card SPI/Idle state 
+  CS_LOW(); 
+  if (send_cmd_no_wait_ready(CMD0, 0) == 1) { //Put the card SPI/Idle state 
     Timer1 = 1000; // Initialization timeout = 1 sec  
-    if (send_cmd(CMD8, 0x1AA) == 1) {	// SDv2?  
+    if (send_cmd_no_wait_ready(CMD8, 0x1AA) == 1) {	// SDv2?  
       for (n = 0; n < 4; n++) ocr[n] = xchg_spi(0xFF); // Get 32 bit return value of R7 resp 
       if (ocr[2] == 0x01 && ocr[3] == 0xAA) { // Is the card supports vcc of 2.7-3.6V? 
         while (Timer1 && send_cmd(ACMD41, 1UL << 30)) ; // Wait for end of initialization with ACMD41(HCS) 
@@ -196,7 +198,11 @@ DRESULT MMC_disk_read(BYTE *buff,DWORD sector,UINT count)
 
   if (count == 1) { // Single sector read 
     // READ_SINGLE_BLOCK
-    if ((send_cmd(CMD17, sector) == 0) && rcvr_datablock(buff, 512)) count = 0;
+    if (send_cmd(CMD17, sector) == 0)
+    {
+      if (rcvr_datablock(buff, 512))
+        count = 0;
+    }
   }
   else { // Multiple sector read 
     if (send_cmd(CMD18, sector) == 0) { // READ_MULTIPLE_BLOCK 
@@ -230,7 +236,11 @@ DRESULT MMC_disk_write(const BYTE *buff,DWORD sector,	UINT count)
 
   if (count == 1) { // Single sector write 
     // WRITE_BLOCK
-    if ((send_cmd(CMD24, sector) == 0) && xmit_datablock(buff, 0xFE)) count = 0;
+    if (send_cmd(CMD24, sector) == 0) 
+    {
+        if (xmit_datablock(buff, 0xFE)) 
+          count = 0;
+    }
   }
   else { // Multiple sector write 
     if (CardType & CT_SDC) send_cmd(ACMD23, count); // Predefine number of sectors 
@@ -592,7 +602,8 @@ static int rcvr_datablock (BYTE *buff, UINT btr)
     token = xchg_spi(0xFF);
     // This loop will take a time. Insert rot_rdq() here for multitask envilonment.
   } while ((token == 0xFF) && Timer1);
-  if(token != 0xFE) return 0; // Function fails if invalid DataStart token or timeout
+  if(token != 0xFE) 
+    return 0; // Function fails if invalid DataStart token or timeout
 
   rcvr_spi_multi(buff, btr); // Store trailing data to the buffer
   xchg_spi(0xFF); xchg_spi(0xFF); // Discard CRC
@@ -618,7 +629,11 @@ static int xmit_datablock(const BYTE *buff,BYTE token)
     xmit_spi_multi(buff, 512); // Data
     xchg_spi(0xFF); xchg_spi(0xFF); // Dummy CRC
 
-    resp = xchg_spi(0xFF); // Receive data resp
+    int n = 10; // Wait for response (10 bytes max)
+    do {
+      resp = xchg_spi(0xFF);
+    } while ((resp == 0xFF) && --n);
+
     // Function fails if the data packet was not accepted
     if ((resp & 0x1F) != 0x05) return 0;
   }
@@ -648,6 +663,37 @@ static BYTE send_cmd (BYTE cmd, DWORD arg)
     deselect();
     if (!select()) return 0xFF;
   }
+
+  // Send command packet
+  xchg_spi(0x40 | cmd); // Start + command index
+  xchg_spi((BYTE)(arg >> 24)); // Argument[31..24]
+  xchg_spi((BYTE)(arg >> 16)); // Argument[23..16]
+  xchg_spi((BYTE)(arg >> 8)); // Argument[15..8]
+  xchg_spi((BYTE)arg); // Argument[7..0]
+  n = 0x01; // Dummy CRC + Stop
+  if (cmd == CMD0) n = 0x95; // Valid CRC for CMD0(0)
+  if (cmd == CMD8) n = 0x87; // Valid CRC for CMD8(0x1AA)
+  xchg_spi(n);
+
+  // Receive command resp
+  if (cmd == CMD12) xchg_spi(0xFF); // Diacard following one byte when CMD12
+  n = 10; // Wait for response (10 bytes max)
+  do {
+    res = xchg_spi(0xFF);
+  }while ((res & 0x80) && --n);
+
+  return res; // Return received response
+}
+
+//--------------------------------------------------------------
+// Send a command packet to the MMC, don't wait for the card to be ready (used for initialization)
+// cmd : Command index
+// arg : Argument
+// ret_wert : R1 resp (bit7==1:Failed to send)
+//--------------------------------------------------------------
+static BYTE send_cmd_no_wait_ready (BYTE cmd, DWORD arg)
+{
+  BYTE n, res;
 
   // Send command packet
   xchg_spi(0x40 | cmd); // Start + command index
