@@ -23,7 +23,7 @@
 //--------------------------------------------------------------
 #define SD_SPI_PORT               SPI2
 #define SD_SPI_MODE               SPI_MODE_0
-#define SD_SPI_CLK_SLOW           SPI_BaudRatePrescaler_64  // 656 kHz
+#define SD_SPI_CLK_SLOW           SPI_BaudRatePrescaler_128  // 0.5*656 kHz
 #define SD_SPI_CLK_FAST           SPI_BaudRatePrescaler_32   // 1.3125 MHz
 
 //--------------------------------------------------------------
@@ -32,7 +32,7 @@
 //    1 = mit internem PullUp
 //    0 = ohne internem PullUp -> externer PullUp notwendig
 //--------------------------------------------------------------
-#define USE_INTERNAL_MISO_PULLUP  1  // (mit internem PullUp)
+#define USE_INTERNAL_MISO_PULLUP  0  // (mit internem PullUp)
 
 #define SD_SPI_MISO_PORT          GPIOB
 #define SD_SPI_MISO_PIN           GPIO_Pin_14

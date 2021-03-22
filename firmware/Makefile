@@ -1,6 +1,10 @@
 TARGET = Wunderkiste
 # change this to the toolchain installation directory
-TOOLCHAIN_PATH ?= ~/dev/gcc-arm-none-eabi-9-2020-q2-update/bin/
+ifeq ($(OS),Windows_NT)
+	TOOLCHAIN_PATH ?= "C:/Program Files (x86)/GNU Arm Embedded Toolchain/9 2020-q2-update/bin/"
+else
+	TOOLCHAIN_PATH ?= "~/dev/gcc-arm-none-eabi-9-2020-q2-update/bin/"
+endif
 
 # System specifications
 F_CRYSTAL      = 8000000L

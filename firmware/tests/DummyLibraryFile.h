@@ -64,9 +64,10 @@ public:
         return true;
     }
 
-    void close() override
+    bool close() override
     {
         getTestEnv().numSimultaneousFilesOpen_--;
+        return true;
     }
 
     bool tryRead(char* readBuffer, uint32_t numBytesRequested, uint32_t& numBytesRead) override
