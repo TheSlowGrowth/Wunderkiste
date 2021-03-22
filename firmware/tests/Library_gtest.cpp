@@ -168,7 +168,7 @@ TEST_F(Library_Fixture, k_isLinked_tagFound)
 
 TEST_F(Library_Fixture, l_isLinked_tagNotFound)
 {
-       // isLinked() - an entry is found for the requested tag
+    // isLinked() - an entry is found for the requested tag
     DummyLibraryFile::getTestEnv().fileContents_ = "1A2B3C4D:A Test Directory Name\n2A3B4C5D:Another Directory Name\n";
     Library library;
 

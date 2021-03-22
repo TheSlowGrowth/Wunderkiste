@@ -370,5 +370,4 @@ TEST(FixedSizeString, r_operatorGtLt)
     EXPECT_FALSE(FixedSizeStr<5>("abc") > "abc");
     EXPECT_TRUE(FixedSizeStr<5>("abcd") >= "abc");
     EXPECT_TRUE(FixedSizeStr<5>("abc") >= "abc");
-
 }

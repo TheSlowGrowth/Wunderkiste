@@ -30,8 +30,8 @@ public:
     {
     }
 
-    template<typename ...Args>
-    void create(Args&&... args) 
+    template <typename... Args>
+    void create(Args&&... args)
     {
         object_ = new (::std::addressof(storage_)) T(std::forward<Args>(args)...);
     }

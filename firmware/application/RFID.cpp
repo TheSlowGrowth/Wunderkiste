@@ -83,7 +83,7 @@ void RfidReader::readAndGenerateEvents(UiEventQueue& queue)
                 currentTag = newTagId.asUint32;
                 lastTimeValidMs = Systick::getMsCounter();
             }
-            else 
+            else
                 // the tag has not changed.
                 lastTimeValidMs = Systick::getMsCounter();
         }

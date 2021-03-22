@@ -119,7 +119,7 @@ public:
     {
     }
 
-    void enableAndReset() 
+    void enableAndReset()
     {
         timeoutCounter_ = timeoutCounterMaxMs_;
         if (!isActive_)

@@ -27,9 +27,9 @@ public:
 class LED
 {
 public:
-    enum class Pattern 
+    enum class Pattern
     {
-        redContinuous, 
+        redContinuous,
         yellowContinuous,
         greenContinuous,
         linkWaitingForTag,
