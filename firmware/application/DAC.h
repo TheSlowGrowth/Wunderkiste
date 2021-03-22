@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AUDIO_H__
-#define __AUDIO_H__
+#ifndef __DAC_H__
+#define __DAC_H__
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -61,4 +61,4 @@ void StopAudio();
 void ProvideAudioBuffer(void *samples,int numsamples);
 bool ProvideAudioBufferWithoutBlocking(void *samples,int numsamples);
 
-#endif
+#endif // #ifndef __DAC_H__
