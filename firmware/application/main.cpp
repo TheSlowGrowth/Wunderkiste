@@ -1,5 +1,5 @@
 /**	
- * Copyright (C) Johannes Elliesen, 2020
+ * Copyright (C) Johannes Elliesen, 2021
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 extern "C"
 {
 #include "stm32f4xx.h"
-#include "stm32f4xx_it.h"
 #include "core_cm4.h"
 #include "stm32f4xx_conf.h"
 }

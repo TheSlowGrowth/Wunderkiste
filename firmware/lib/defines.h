@@ -1,5 +1,5 @@
 /**	
- * Copyright (C) Johannes Elliesen, 2021
+ * Copyright (C) Johannes Elliesen, 2020
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,33 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-#include "UiEventQueue.h"
+#define STM32F4xx
 
-class ButtonScanner
-{
-public:
-    static void init(UiEventQueue& eventQueueToUse);
-};
-
-class LED
-{
-public:
-    enum class Pattern 
-    {
-        redContinuous, 
-        yellowContinuous,
-        greenContinuous,
-        linkWaitingForTag,
-        linkErrorWaitingForTagRemove,
-        linkSuccessfulWaitingForTagRemove,
-        idle,
-        playing,
-        errNoCard,
-        errInternal,
-        off
-    };
-
-    static void init();
-    static void setLed(Pattern pattern);
-};
+#define TM_SPI1_PRESCALER   SPI_BaudRatePrescaler_8

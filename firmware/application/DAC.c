@@ -1,5 +1,5 @@
 /**	
- * Copyright (C) Johannes Elliesen, 2020
+ * Copyright (C) Johannes Elliesen, 2021
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Audio.h"
 #include "stm32f4xx_conf.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
+#include "stm32f4xx_dma.h"
 #include "stm32f4xx.h"
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 static void WriteRegister(uint8_t address, uint8_t value);
 static void StartAudioDMAAndRequestBuffers();
 static void StopAudioDMA();
+void SetAudioVolume(int volume);
+bool ProvideAudioBufferWithoutBlocking(void *samples,int numsamples);
+typedef void AudioCallbackFunction(void *context,int buffer);
 
 static AudioCallbackFunction *CallbackFunction;
 static void *CallbackContext;
