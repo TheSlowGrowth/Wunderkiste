@@ -5,10 +5,10 @@
             "name": "Launch On Hardware",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/firmware/build/Wunderkiste/Wunderkiste.elf",
+            "program": "${workspaceFolder}/firmware/build/Wunderkiste/Wunderkiste.elf",
             "args": [],
             "stopAtEntry": true,
-            "cwd": "${workspaceRoot}/firmware",
+            "cwd": "${workspaceFolder}/firmware",
             "environment": [],
             "externalConsole": false,
             "debugServerArgs": "-f interface/stlink-v2-1.cfg -f target/stm32f4x.cfg -c init -c \"reset init\"",
@@ -19,7 +19,7 @@
             "preLaunchTask": "build-Wunderkiste",
             "setupCommands": [
                 { "text": "-target-select remote localhost:3333", "description": "connect to target", "ignoreFailures": false },
-                { "text": "-file-exec-and-symbols ${workspaceRoot}/firmware/build/Wunderkiste/Wunderkiste.elf", "description": "load file", "ignoreFailures": false},
+                { "text": "-file-exec-and-symbols ${workspaceFolder}/firmware/build/Wunderkiste/Wunderkiste.elf", "description": "load file", "ignoreFailures": false},
                 { "text": "-interpreter-exec console \"monitor endian little\"", "ignoreFailures": false },
                 { "text": "-interpreter-exec console \"monitor reset\"", "ignoreFailures": false },
                 { "text": "-interpreter-exec console \"monitor halt\"", "ignoreFailures": false },
@@ -44,14 +44,17 @@
                 "debugServerPath": "openocd"
             },
             "windows": {
-                "preLaunchTask": "mbed",
                 "MIMode": "gdb",
-                "MIDebuggerPath": "C:\\Program Files (x86)\\GNU Tools ARM Embedded\\4.9 2015q3\\bin\\arm-none-eabi-gdb.exe",
+                "MIDebuggerPath": "C:\\Program Files (x86)\\GNU Arm Embedded Toolchain\\9 2020-q2-update\\bin\\arm-none-eabi-gdb.exe",
                 "debugServerPath": "openocd.exe",
+                "cwd": "${workspaceFolder}\\firmware\\build\\Wunderkiste",
+                "externalConsole" : true,
                 "setupCommands": [
-                    { "text": "-environment-cd ${workspaceRoot}\\DISCO_F413ZH\\GCC_ARM\\BUILD" },
                     { "text": "-target-select remote localhost:3333", "description": "connect to target", "ignoreFailures": false },
-                    { "text": "-file-exec-and-symbols ${workspaceRootFolderName}.elf", "description": "load file", "ignoreFailures": false},
+                    // cygwin environment makes openocd believe it needs posix format for the folders. I tried have to use 
+                    // the "command:extension.commandvariable.workspace.workspaceFolderPosix" to generate a posix-version of the workspace root folder path.
+                    // It doesn't work. I have not found a better solution than providing the full absolute path here...
+                    { "text": "-file-exec-and-symbols C:/Users/johannes/Documents/Repos/Wunderkiste/firmware/build/Wunderkiste/Wunderkiste.elf", "description": "load file", "ignoreFailures": false},
                     { "text": "-interpreter-exec console \"monitor endian little\"", "ignoreFailures": false },
                     { "text": "-interpreter-exec console \"monitor reset\"", "ignoreFailures": false },
                     { "text": "-interpreter-exec console \"monitor halt\"", "ignoreFailures": false },
@@ -64,17 +67,23 @@
             "name": "Launch Tests Locally",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/firmware/tests/build/bin/Wunderkiste_gtest",
+            "program": "${workspaceFolder}/firmware/tests/build/bin/Wunderkiste_gtest",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/firmware/tests/build/bin",
             "environment": [],
             "externalConsole": false,
-            "MIMode": "lldb",
             "logging": {
                 "engineLogging": false
             },
             "preLaunchTask": "buildTests-Wunderkiste",
+            
+            "osx": {
+                "MIMode": "lldb",
+            },
+            "windows": {
+                "MIMode": "gdb",
+            }
         }
     ]
 }

@@ -70,11 +70,11 @@ ErrorStatus UB_SPI2_Init(SPI2_Mode_t mode)
     GPIO_PinAFConfig(SPI2DEV.MOSI.PORT, SPI2DEV.MOSI.SOURCE, GPIO_AF_SPI2);
     GPIO_PinAFConfig(SPI2DEV.MISO.PORT, SPI2DEV.MISO.SOURCE, GPIO_AF_SPI2);
 
-    // SPI als Alternative-Funktion mit PullDown
+    // SPI als Alternative-Funktion
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_25MHz;
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
     // SCK-Pin
     GPIO_InitStructure.GPIO_Pin = SPI2DEV.SCK.PIN;
@@ -159,22 +159,6 @@ void initSpi2Interrupt()
 
 void SPI2_IRQHandler()
 {
-    bool shouldKeepInterruptOn = (numLeftToSend > 1) || (numLeftToReceive > 1);
-
-    if (SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_TXE) == SET)
-    {
-        if (!shouldKeepInterruptOn)
-            SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, DISABLE);
-        // send next byte
-        if (numLeftToSend > 0)
-        {
-            SPI_I2S_SendData(SPI2, *interruptSendBuffer++);
-            numLeftToSend--;
-        }
-        // send dummy byte so that we can receive something
-        else if (numLeftToReceive > 0)
-            SPI_I2S_SendData(SPI2, 0xFF);
-    }
     if (SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_RXNE) == SET)
     {
         if (numLeftToReceive > 0)
@@ -186,19 +170,38 @@ void SPI2_IRQHandler()
             // just clear the register but drop the data
             (void) SPI_I2S_ReceiveData(SPI2);
     }
+
+    if (SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_TXE) == SET)
+    {
+        // send next byte
+        if (numLeftToSend > 0)
+        {
+            SPI_I2S_SendData(SPI2, *interruptSendBuffer++);
+            numLeftToSend--;
+            if ((numLeftToSend == 0) && (numLeftToReceive == 1))
+                // disable interrupt - we're done
+                SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, DISABLE);
+        }
+        // send dummy byte so that we can receive something
+        else if (numLeftToReceive > 0)
+            SPI_I2S_SendData(SPI2, 0xFF);
+        else
+        // disable interrupt - we're done
+            SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, DISABLE);
+    }
 }
 
 void UB_SPI2_SendMultipleBytes(const uint8_t* data, uint32_t size)
 {
+    while(SPI2->SR & SPI_I2S_FLAG_BSY)
+        ;
+
     interruptReceiveBuffer = 0;
     numLeftToReceive = 0;
-    interruptSendBuffer = data + 1;
-    numLeftToSend = size - 1;
-    // send the first byte
-    SPI_I2S_SendData(SPI2, *data);
-    // enable the transmit interrupt if more bytes are to come
-    if (numLeftToSend > 0)
-        SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, ENABLE);
+    interruptSendBuffer = data;
+    numLeftToSend = size;
+    // start transmission by enabling the TXE interrupt
+    SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, ENABLE);
 
     // wait for completion
     while (numLeftToSend > 0)
@@ -207,15 +210,15 @@ void UB_SPI2_SendMultipleBytes(const uint8_t* data, uint32_t size)
 
 void UB_SPI2_ReceiveMultipleBytes(uint8_t* data, uint32_t size)
 {
+    while(SPI2->SR & SPI_I2S_FLAG_BSY)
+        ;
+       
     interruptReceiveBuffer = data;
     numLeftToReceive = size;
     interruptSendBuffer = 0;
     numLeftToSend = 0;
-    // send the first dummy byte
-    SPI_I2S_SendData(SPI2, 0xFF);
-    // enable the transmit interrupt to send more dummy bytes if required
-    if (numLeftToReceive > 1)
-        SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, ENABLE);
+    // start transmission by enabling the TXE interrupt
+    SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, ENABLE);
 
     // wait for completion
     while (numLeftToReceive > 0)
@@ -224,15 +227,15 @@ void UB_SPI2_ReceiveMultipleBytes(uint8_t* data, uint32_t size)
 
 void UB_SPI2_SendAndReceiveMultipleBytes(uint8_t* txData, uint32_t txSize, uint8_t* rxData, uint32_t rxSize)
 {
+    while(SPI2->SR & SPI_I2S_FLAG_BSY)
+        ;
+       
     interruptReceiveBuffer = rxData;
     numLeftToReceive = rxSize;
-    interruptSendBuffer = txData + 1;
-    numLeftToSend = txSize - 1;
-    // send the first byte
-    SPI_I2S_SendData(SPI2, *txData);
-    // enable the transmit interrupt if more bytes are to come
-    if ((numLeftToReceive > 1) || (numLeftToSend > 0))
-        SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, ENABLE);
+    interruptSendBuffer = txData;
+    numLeftToSend = txSize;
+    // start transmission by enabling the TXE interrupt
+    SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, ENABLE);
 
     // wait for completion
     while ((numLeftToSend > 0) || (numLeftToReceive > 0))
