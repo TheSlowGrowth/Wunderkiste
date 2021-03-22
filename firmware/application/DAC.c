@@ -1,5 +1,5 @@
 /**	
- * Copyright (C) Johannes Elliesen, 2020
+ * Copyright (C) Johannes Elliesen, 2021
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #include "stm32f4xx_conf.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
+#include "stm32f4xx_dma.h"
 #include "stm32f4xx.h"
 
 #include <stdlib.h>
