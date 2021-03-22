@@ -6,6 +6,7 @@
                 "~/dev/gcc-arm-none-eabi-9-2020-q2-update/include",
                 "${workspaceRoot}/firmware/",
                 "${workspaceRoot}/firmware/lib",
+                "${workspaceRoot}/firmware/lib/googletest/googletest/include",
                 "${workspaceRoot}/firmware/lib/STM",
                 "${workspaceRoot}/firmware/lib/STM/STM32F4xx_StdPeriph_Driver/inc",
                 "${workspaceRoot}/firmware/lib/fatfs",
@@ -13,7 +14,6 @@
                 "${workspaceRoot}/firmware/lib/helix/pub",
                 "${workspaceRoot}/firmware/lib/Core/cmsis",
                 "${workspaceRoot}/firmware/lib/Core/stm32",
-                "${workspaceRoot}/firmware/tests/googletest/googletest/include",
                 "${workspaceRoot}/firmware/application"
             ],
             "defines": [
@@ -38,6 +38,7 @@
                 "C:\\Program Files (x86)\\GNU Arm Embedded Toolchain\\9 2020-q2-update\\arm-none-eabi\\include",
                 "${workspaceRoot}/firmware/",
                 "${workspaceRoot}/firmware/lib",
+                "${workspaceRoot}/firmware/lib/googletest/googletest/include",
                 "${workspaceRoot}/firmware/lib/STM",
                 "${workspaceRoot}/firmware/lib/STM/STM32F4xx_StdPeriph_Driver/inc",
                 "${workspaceRoot}/firmware/lib/fatfs",
@@ -45,7 +46,6 @@
                 "${workspaceRoot}/firmware/lib/helix/pub",
                 "${workspaceRoot}/firmware/lib/Core/cmsis",
                 "${workspaceRoot}/firmware/lib/Core/stm32",
-                "${workspaceRoot}/firmware/tests/googletest/googletest/include",
                 "${workspaceRoot}/firmware/application"
             ],
             "defines": [

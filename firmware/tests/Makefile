@@ -27,8 +27,6 @@ endif
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
 OBJECTS = $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
-OBJECTS += $(BUILD_PATH)/googletest/googletest/src/gtest_main.o
-OBJECTS += $(BUILD_PATH)/googletest/googletest/src/gtest-all.o
 
 # Set the dependency files that will be used to add header dependencies
 DEPS = $(OBJECTS:.o=.d)
@@ -36,8 +34,9 @@ DEPS = $(OBJECTS:.o=.d)
 # flags #
 COMPILE_FLAGS = -std=gnu++17 -Wall -Wextra -g -Werror -pthread
 INCLUDES = -I /usr/local/include/ \
-		   -I googletest/googletest/ \
-		   -I googletest/googletest/include/ \
+		   -I ../lib/googletest/ \
+		   -I ../lib/googletest/googletest/ \
+		   -I ../lib/googletest/googletest/include/ \
 		   -I ../application/ \
 		   -I ../lib/helix/pub/ \
 		   -I .
