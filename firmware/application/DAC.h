@@ -21,20 +21,20 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef void AudioCallbackFunction(void *context,int buffer);
+typedef void AudioCallbackFunction(void* context, int buffer);
 
-#define Audio8000HzSettings 256,5,12,1
-#define Audio16000HzSettings 213,2,13,0
-#define Audio32000HzSettings 213,2,6,1
-#define Audio48000HzSettings 258,3,3,1
-#define Audio96000HzSettings 344,2,3,1
-#define Audio22050HzSettings 429,4,9,1
-#define Audio44100HzSettings 271,2,6,0
-#define AudioVGAHSyncSettings 419,2,13,0 // 31475.3606. Actual VGA timer is 31472.4616.
+#define Audio8000HzSettings 256, 5, 12, 1
+#define Audio16000HzSettings 213, 2, 13, 0
+#define Audio32000HzSettings 213, 2, 6, 1
+#define Audio48000HzSettings 258, 3, 3, 1
+#define Audio96000HzSettings 344, 2, 3, 1
+#define Audio22050HzSettings 429, 4, 9, 1
+#define Audio44100HzSettings 271, 2, 6, 0
+#define AudioVGAHSyncSettings 419, 2, 13, 0 // 31475.3606. Actual VGA timer is 31472.4616.
 
 // Initialize and power up audio hardware. Use the above defines for the parameters.
 // Can probably only be called once.
-void InitializeAudio(int plln,int pllr,int i2sdiv,int i2sodd);
+void InitializeAudio(int plln, int pllr, int i2sdiv, int i2sodd);
 
 // Power up and down the audio hardware.
 void AudioOn();
@@ -49,7 +49,7 @@ void OutputAudioSampleWithoutBlocking(int16_t sample);
 
 // Start and stop audio playback using DMA.
 // Callback is optional, and called whenever a new buffer is needed.
-void PlayAudioWithCallback(AudioCallbackFunction *callback,void *context);
+void PlayAudioWithCallback(AudioCallbackFunction* callback, void* context);
 void StopAudio();
 
 // Provide a new buffer to the audio DMA. Output is double buffered, so
@@ -58,7 +58,7 @@ void StopAudio();
 // invocation.
 // Buffers must reside in DMA1-accessible memory, that is, the 128k RAM bank,
 // or flash.
-void ProvideAudioBuffer(void *samples,int numsamples);
-bool ProvideAudioBufferWithoutBlocking(void *samples,int numsamples);
+void ProvideAudioBuffer(void* samples, int numsamples);
+bool ProvideAudioBufferWithoutBlocking(void* samples, int numsamples);
 
 #endif // #ifndef __DAC_H__

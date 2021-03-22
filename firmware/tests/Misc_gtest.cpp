@@ -19,7 +19,7 @@ std::map<std::string, DummyDirectoryIterator::TestEnvironment> DummyDirectoryIte
 
 // specify some functions manually to make the linker happy
 // TODO: Include these int he Wunderkiste tests.
-void LED::setLed(LED::Pattern){}
+void LED::setLed(LED::Pattern) {}
 void Power::shutdownImmediately() {}
 void Power::enableOrResetAutoShutdownTimer() {}
 void Power::disableAutoShutdownTimer() {}

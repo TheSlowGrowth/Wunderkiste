@@ -22,7 +22,6 @@ extern "C"
 #include "DAC.h"
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_rcc.h"
-
 }
 
 #define STANDBY_MUTE_PORT GPIOC

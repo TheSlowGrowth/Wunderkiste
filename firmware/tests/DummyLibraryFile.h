@@ -101,7 +101,7 @@ public:
         return false;
     }
 
-    bool advanceCursor(size_t numBytes) override 
+    bool advanceCursor(size_t numBytes) override
     {
         return setCursorTo(readIndex_ + numBytes);
     }

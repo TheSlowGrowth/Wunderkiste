@@ -90,7 +90,7 @@ public:
             break;
             case State::unrecoverableError:
             {
-                // TODO: timeout!
+                // rest here until timeout cuts power
             }
             break;
             case State::linkWaitingForTag:

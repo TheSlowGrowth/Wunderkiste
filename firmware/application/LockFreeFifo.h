@@ -19,7 +19,6 @@
 #include "stdint.h"
 #include <algorithm>
 
-
 /** A single reader / single writer lock-free FIFO */
 template <typename ValueType, int size>
 class LockFreeFifo
