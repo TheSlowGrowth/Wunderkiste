@@ -15,17 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Audio.h"
 #include "stm32f4xx_conf.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx.h"
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 static void WriteRegister(uint8_t address, uint8_t value);
 static void StartAudioDMAAndRequestBuffers();
 static void StopAudioDMA();
+void SetAudioVolume(int volume);
+bool ProvideAudioBufferWithoutBlocking(void *samples,int numsamples);
+typedef void AudioCallbackFunction(void *context,int buffer);
 
 static AudioCallbackFunction *CallbackFunction;
 static void *CallbackContext;

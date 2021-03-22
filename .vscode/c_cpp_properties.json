@@ -5,8 +5,9 @@
             "includePath": [
                 "~/dev/gcc-arm-none-eabi-9-2020-q2-update/include",
                 "${workspaceRoot}/firmware/",
-                "${workspaceRoot}/firmware/inc",
                 "${workspaceRoot}/firmware/lib",
+                "${workspaceRoot}/firmware/lib/STM",
+                "${workspaceRoot}/firmware/lib/STM/STM32F4xx_StdPeriph_Driver/inc",
                 "${workspaceRoot}/firmware/lib/fatfs",
                 "${workspaceRoot}/firmware/lib/helix",
                 "${workspaceRoot}/firmware/lib/helix/pub",
@@ -17,10 +18,7 @@
             ],
             "defines": [
                 "DEBUG=1",
-                "USE_HAL_DRIVER",
-                "STM32H750xx",
-                "USE_HAL_DRIVER",
-                "STM32H750xx"
+                "STM32F40_41xxx"
             ],
             "intelliSenseMode": "gcc-x64",
             "browse": {
@@ -39,8 +37,9 @@
             "includePath": [
                 "C:\\Program Files (x86)\\GNU Arm Embedded Toolchain\\9 2020-q2-update\\arm-none-eabi\\include",
                 "${workspaceRoot}/firmware/",
-                "${workspaceRoot}/firmware/inc",
                 "${workspaceRoot}/firmware/lib",
+                "${workspaceRoot}/firmware/lib/STM",
+                "${workspaceRoot}/firmware/lib/STM/STM32F4xx_StdPeriph_Driver/inc",
                 "${workspaceRoot}/firmware/lib/fatfs",
                 "${workspaceRoot}/firmware/lib/helix",
                 "${workspaceRoot}/firmware/lib/helix/pub",
@@ -51,10 +50,7 @@
             ],
             "defines": [
                 "DEBUG=1",
-                "USE_HAL_DRIVER",
-                "STM32H750xx",
-                "USE_HAL_DRIVER",
-                "STM32H750xx"
+                "STM32F40_41xxx"
             ],
             "intelliSenseMode": "gcc-x64",
             "browse": {

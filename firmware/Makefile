@@ -19,7 +19,7 @@ UPLOAD_COMMAND  = upload_jtag_erase_first
 CC_FILES = $(wildcard application/*.cpp)
 C_FILES = $(wildcard application/*.c)
 # RFID, GPIO, SPI etc.
-INCFLAGS = -Iinc -Ilib/
+INCFLAGS = -Ilib/ -Ilib/STM/
 C_FILES  += $(wildcard lib/*.c)
 # SD driver and Fatfs
 INCFLAGS += -Ilib/fatfs
