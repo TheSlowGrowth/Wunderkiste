@@ -16,6 +16,10 @@ jobs:
         with:
           release: '9-2019-q4' # The arm-none-eabi-gcc release to use.
 
+      - name: Get release name
+        id: getReleaseName
+        run: echo ::set-output name=RELEASE_NAME::${GITHUB_REF/refs\/tags\//}
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -57,8 +61,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
+          tag_name: ${{ steps.getReleaseName.outputs.RELEASE_NAME }}
+          name: Release ${{ steps.getReleaseName.outputs.RELEASE_NAME }}
           draft: true
           prerelease: false
           fail_on_unmatched_files: true
