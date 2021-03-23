@@ -23,7 +23,7 @@
 class Library
 {
 public:
-    using StringType = FixedSizeStr<128>;
+    using StringType = FixedSizeStr<256>;
 
     Library();
     Library(const Library&) = delete;

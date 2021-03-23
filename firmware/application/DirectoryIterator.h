@@ -125,7 +125,7 @@ public:
     const char* getDirectoryPath() const { return directoryPath_; }
     FRESULT getLastError() const { return errorCode_; }
 
-    FixedSizeStr<128> directoryPath_;
+    FixedSizeStr<256> directoryPath_;
     DIR dirHandle_;
     FILINFO fileInfo_;
     FRESULT errorCode_;
