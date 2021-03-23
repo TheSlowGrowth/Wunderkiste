@@ -173,7 +173,7 @@ private:
                 continue;
             }
 
-            FixedSizeStr<128> filePath;
+            FixedSizeStr<256> filePath;
 
             // combine full file path
             filePath = directoryPath;
@@ -207,5 +207,5 @@ private:
     Mp3FileStream fileStream_;
     NextAction nextAction_;
     size_t currentFileIndex_;
-    StaticVector<FixedSizeStr<128>, 128> files_;
+    StaticVector<FixedSizeStr<256>, 128> files_;
 };

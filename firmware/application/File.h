@@ -213,7 +213,7 @@ public:
     FRESULT getLastError() const { return errorCode_; }
 
 private:
-    FixedSizeStr<128> filePath_;
+    FixedSizeStr<256> filePath_;
     FIL fileHandle_;
     FRESULT errorCode_;
     bool isOpened_;

@@ -110,7 +110,7 @@ bool Library::isLinked(const StringType& path) const
     // read line by line
     while (!libFile.isEndOfFile())
     {
-        FixedSizeStr<128> line;
+        StringType line;
         if (!libFile.readLine(line))
             return false;
         // must store at least the RFID-ID, the ":" and 1+ characters for the foldername
@@ -142,7 +142,7 @@ bool Library::isLinked(const RfidTagId& tag) const
     // read line by line
     while (!libFile.isEndOfFile())
     {
-        FixedSizeStr<128> line;
+        StringType line;
         if (!libFile.readLine(line))
             return false;
         if (line.startsWith(prefixStr))
@@ -204,7 +204,7 @@ bool Library::checkLibraryFile()
     // read line by line and check format
     while (!libFile.isEndOfFile())
     {
-        FixedSizeStr<128> line;
+        StringType line;
         if (!libFile.readLine(line))
             return false;
         // must store at least the RFID-ID, the ":" and 1+ characters for the foldername
