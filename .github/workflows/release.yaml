@@ -69,6 +69,7 @@ jobs:
           files: |
             ./firmware/build/Wunderkiste/Wunderkiste.hex
             ./firmware/build/Wunderkiste/Wunderkiste.bin
+            ./hardware/BOM.xlsx
             ./PCB_Files.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
