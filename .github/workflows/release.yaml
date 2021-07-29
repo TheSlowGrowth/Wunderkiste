@@ -45,7 +45,7 @@ jobs:
           make all TOOLCHAIN_PATH=""
 
       - name: Generate Hardware Design Files
-        uses: TheSlowGrowth/KiBot@feature/install-kicad-git-filters
+        uses: INTI-CMNB/KiBot@v1
         with:
           config: 'hardware/pcb_kicad/Wunderkiste.kibot.yaml'
           schema: 'hardware/pcb_kicad/Wunderkiste.sch'
