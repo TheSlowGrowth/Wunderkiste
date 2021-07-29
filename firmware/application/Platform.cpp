@@ -52,6 +52,27 @@ static FATFS FatFs;
 bool Filesystem::mount()
 {
     FRESULT res = f_mount(&FatFs, "0:", 1);
+    if (res == FR_OK)
+        return true;
+
+    // if filesystem is not ready yet, attampt once more, after a short delay
+    int timeoutCounter = 0;
+    while (res == FR_NOT_READY)
+    {
+        Systick::delayMs(100);
+        res = f_mount(&FatFs, "0:", 1);
+        timeoutCounter++;
+        // abort after 1s
+        if (timeoutCounter >= 10)
+            return false;
+    }
+
+    return (res == FR_OK);
+}
+
+bool Filesystem::unmount()
+{
+    FRESULT res = f_unmount("0:");
     return (res == FR_OK);
 }
 
@@ -174,6 +195,8 @@ void Power::initAndLatchOn()
 
 void Power::shutdownImmediately()
 {
+    //unmount the filesystem
+    Filesystem::unmount();
     // turn off the mosfet to cut power
     GPIO_SetBits(GPIOA, GPIO_Pin_1);
 }

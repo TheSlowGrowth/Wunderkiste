@@ -26,6 +26,7 @@ class Filesystem
 {
 public:
     static bool mount();
+    static bool unmount();
 };
 
 // =============================================================================

@@ -51,6 +51,17 @@ int main(void)
     Systick::init();
     LED::init();
     const bool filesystemMounted = Filesystem::mount();
+    if (!filesystemMounted)
+    {
+        // display error code
+        LED::setLed(LED::Pattern::errNoCard);
+        // wait a while and auto-shutdown
+        Power::enableOrResetAutoShutdownTimer();
+        while (1)
+        {
+            WatchdogTimer::reset();
+        }
+    }
 
     uiEventQueue.create();
 
